@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌊 Moana Pathways - Career Runner Game 🌊</title>
+    <title>🌊 Moana Pathways - Subway Runner 🌊</title>
     <style>
         * {
             margin: 0;
@@ -27,390 +27,348 @@
             align-items: center;
         }
 
-        .game-screen {
-            width: 90%;
+        .game-wrapper {
+            width: 100%;
+            height: 100vh;
             max-width: 900px;
-            height: 90vh;
             max-height: 600px;
-            background: linear-gradient(to bottom, #0a2818 0%, #1a472a 100%);
-            border: 3px solid #ffd700;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
+            background: #000;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 10px;
+        /* MAIN MENU */
+        .menu-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a472a 0%, #0a2818 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        .title {
-            font-size: 2em;
+        .game-title {
+            font-size: 3em;
             font-weight: bold;
             color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-
-        .subtitle {
-            font-size: 0.9em;
-            color: #a8d5ba;
-            margin-top: 5px;
-        }
-
-        .game-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-        }
-
-        .menu-screen, .gameplay-screen, .mentor-screen, .level-screen, .leaderboard-screen {
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
             text-align: center;
+            animation: bounce 2s infinite;
         }
 
-        .menu-option {
-            padding: 12px 20px;
-            margin: 8px auto;
-            width: 200px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #1a472a;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-
-        .menu-option:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        }
-
-        .menu-option:active {
-            transform: scale(0.98);
-        }
-
-        .action-button {
-            padding: 10px 15px;
-            margin: 5px;
-            background: #ffd700;
-            color: #1a472a;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .action-button:hover {
-            background: #ffed4e;
-        }
-
-        .gameplay-area {
-            background: linear-gradient(to bottom, #1a472a 0%, #0a2818 100%);
-            border: 2px solid #a8d5ba;
-            border-radius: 8px;
-            padding: 15px;
-            height: 300px;
-            position: relative;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .moana {
-            position: absolute;
-            left: 50px;
-            bottom: 30px;
-            font-size: 3em;
-            cursor: pointer;
-        }
-
-        .mentor {
-            position: absolute;
-            right: 50px;
-            top: 20px;
-            font-size: 2.5em;
-            cursor: pointer;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .obstacle {
-            position: absolute;
-            font-size: 2em;
-            cursor: pointer;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes float {
+        @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8d5ba;
+            text-align: center;
         }
 
-        .stats {
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .menu-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a472a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            min-width: 250px;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.4);
+        }
+
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* GAME SCREEN */
+        #gameContainer {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .hud {
+            position: absolute;
+            top: 10px;
+            width: 100%;
             display: flex;
             justify-content: space-around;
-            background: rgba(255, 215, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            font-size: 0.9em;
+            align-items: center;
+            z-index: 50;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
         }
 
-        .stat-item {
+        .hud-item {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .question-box {
-            background: rgba(168, 213, 186, 0.2);
-            border: 2px solid #a8d5ba;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+        /* PLAYER */
+        #player {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.5em;
+            z-index: 30;
+            transition: left 0.1s;
         }
 
-        .answer-option {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin: 8px 0;
-            background: rgba(255, 215, 0, 0.1);
-            border: 2px solid transparent;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: left;
-        }
-
-        .answer-option:hover {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: #ffd700;
-        }
-
-        .answer-option input[type="radio"] {
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .message {
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            font-weight: bold;
-        }
-
-        .success {
-            background: rgba(168, 213, 186, 0.3);
-            border: 2px solid #a8d5ba;
-            color: #a8d5ba;
-        }
-
-        .error {
-            background: rgba(255, 100, 100, 0.3);
-            border: 2px solid #ff6464;
-            color: #ff6464;
-        }
-
-        .info {
-            background: rgba(255, 215, 0, 0.2);
-            border: 2px solid #ffd700;
-            color: #ffed4e;
-        }
-
-        .progress-bar {
+        /* LANES */
+        .lane {
+            position: absolute;
             width: 100%;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #ffd700;
+            height: 33.33%;
+            border-bottom: 2px dashed rgba(0,0,0,0.3);
+        }
+
+        .lane1 { top: 0%; }
+        .lane2 { top: 33.33%; }
+        .lane3 { top: 66.66%; }
+
+        /* OBSTACLES */
+        .obstacle {
+            position: absolute;
+            font-size: 2.5em;
+            z-index: 20;
+        }
+
+        /* MENTOR POWERUP */
+        .mentor {
+            position: absolute;
+            font-size: 2.8em;
+            z-index: 20;
+            animation: float 2s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+
+        /* COINS */
+        .coin {
+            position: absolute;
+            font-size: 1.5em;
+            z-index: 20;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        /* GAME OVER SCREEN */
+        .game-over-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 200;
+            display: none;
+        }
+
+        .game-over-text {
+            font-size: 2.5em;
+            color: #ff6464;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .final-score {
+            font-size: 2em;
+            color: #ffd700;
+        }
+
+        .restart-btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a472a;
+            border: none;
             border-radius: 10px;
-            overflow: hidden;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* TUTORIAL */
+        .tutorial-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            z-index: 150;
+            display: none;
+        }
+
+        .tutorial-title {
+            font-size: 2em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .tutorial-content {
+            text-align: center;
+            color: #a8d5ba;
+            font-size: 1em;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        .tutorial-content p {
             margin: 10px 0;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
             color: #1a472a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
             font-weight: bold;
-            font-size: 0.8em;
         }
 
         .hidden {
             display: none !important;
         }
 
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background: rgba(255, 215, 0, 0.1);
-            margin: 5px 0;
-            border-radius: 5px;
-            border-left: 3px solid #ffd700;
-        }
-
-        .rank {
+        .notification {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(168, 213, 186, 0.9);
+            color: #1a472a;
+            padding: 15px 30px;
+            border-radius: 10px;
             font-weight: bold;
-            color: #ffd700;
-        }
-
-        .mentor-bio {
-            background: rgba(168, 213, 186, 0.2);
-            border: 2px solid #a8d5ba;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            line-height: 1.6;
-        }
-
-        .hearts {
             font-size: 1.2em;
-            letter-spacing: 3px;
+            z-index: 60;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        .invincible {
+            animation: shield 0.5s infinite;
+        }
+
+        @keyframes shield {
+            0%, 100% { filter: drop-shadow(0 0 10px #ffd700); }
+            50% { filter: drop-shadow(0 0 20px #ffed4e); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="game-screen">
-            <div class="header">
-                <div class="title">🌊 MOANA PATHWAYS 🌊</div>
-                <div class="subtitle">Career Runner Game for Māori & Pacific Girls</div>
+        <div class="game-wrapper">
+            <!-- MENU SCREEN -->
+            <div class="menu-screen" id="menuScreen">
+                <div class="game-title">🌊 MOANA PATHWAYS 🌊</div>
+                <div class="subtitle">Subway Surfer Style Career Runner!</div>
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="startTutorial()">▶ PLAY</button>
+                    <button class="menu-btn" onclick="showLeaderboard()">🏆 HIGH SCORES</button>
+                    <button class="menu-btn" onclick="showSettings()">⚙️ SETTINGS</button>
+                </div>
             </div>
 
-            <div class="game-content">
-                <!-- MAIN MENU SCREEN -->
-                <div id="mainMenu" class="menu-screen">
-                    <p style="margin: 20px 0; font-size: 1.1em;">Welcome to Your Career Journey! 🎮</p>
-                    <button class="menu-option" onclick="startGame()">▶ PLAY GAME</button>
-                    <button class="menu-option" onclick="showLeaderboard()">🏆 LEADERBOARD</button>
-                    <button class="menu-option" onclick="showHowToPlay()">❓ HOW TO PLAY</button>
-                    <button class="menu-option" onclick="showSettings()">⚙️ SETTINGS</button>
+            <!-- TUTORIAL SCREEN -->
+            <div class="tutorial-screen" id="tutorialScreen">
+                <div class="tutorial-title">📖 HOW TO PLAY</div>
+                <div class="tutorial-content">
+                    <p><strong>🎮 CONTROLS:</strong></p>
+                    <p>← → Arrow Keys or A/D to move left and right</p>
+                    <p>SPACE to jump over obstacles</p>
+                    
+                    <p><strong>📊 OBJECTIVE:</strong></p>
+                    <p>Dodge obstacles (🚧 barriers) and collect power-ups!</p>
+                    <p>Meet mentors (👩‍⚕️👩‍💻👩‍🏫) for bonus points</p>
+                    <p>Grab coins 💰 for extra points</p>
+                    
+                    <p><strong>💡 TIPS:</strong></p>
+                    <p>Time your jumps! Use power-ups to go invincible ⭐</p>
+                </div>
+                <button class="start-btn" onclick="startGame()">START GAME!</button>
+            </div>
+
+            <!-- GAME SCREEN -->
+            <div id="gameContainer">
+                <div class="hud">
+                    <div class="hud-item">Score: <span id="score">0</span></div>
+                    <div class="hud-item">Level: <span id="level">1</span></div>
+                    <div class="hud-item">Lives: <span id="lives">❤❤❤</span></div>
+                    <div class="hud-item">Combo: <span id="combo">0x</span></div>
                 </div>
 
-                <!-- HOW TO PLAY SCREEN -->
-                <div id="howToPlay" class="menu-screen hidden">
-                    <h2>📖 HOW TO PLAY</h2>
-                    <div style="text-align: left; margin: 15px; font-size: 0.9em; line-height: 1.8;">
-                        <p><strong>OBJECTIVE:</strong></p>
-                        <p>Guide Moana through obstacles and meet mentors on her career path!</p>
-                        
-                        <p style="margin-top: 10px;"><strong>GAMEPLAY:</strong></p>
-                        <p>• Click on Moana to move her forward</p>
-                        <p>• Avoid obstacles by answering career questions</p>
-                        <p>• Meet mentors to learn about real careers</p>
-                        <p>• Answer questions correctly to earn points!</p>
-                        
-                        <p style="margin-top: 10px;"><strong>SCORING:</strong></p>
-                        <p>• +10 points: Meet a mentor</p>
-                        <p>• +5 points: Answer correctly</p>
-                        <p>• -5 points: Answer incorrectly</p>
-                    </div>
-                    <button class="action-button" onclick="backToMenu()">← BACK</button>
-                </div>
+                <div class="lane lane1"></div>
+                <div class="lane lane2"></div>
+                <div class="lane lane3"></div>
 
-                <!-- SETTINGS SCREEN -->
-                <div id="settings" class="menu-screen hidden">
-                    <h2>⚙️ SETTINGS</h2>
-                    <div style="text-align: left; margin: 15px; font-size: 0.9em;">
-                        <p><strong>GAME SETTINGS:</strong></p>
-                        <label><input type="checkbox" checked> Sound Effects</label><br>
-                        <label><input type="checkbox" checked> Background Music</label><br>
-                        
-                        <p style="margin-top: 15px;"><strong>LANGUAGE:</strong></p>
-                        <select style="padding: 5px; background: #1a472a; color: #ffd700; border: 2px solid #ffd700; border-radius: 5px;">
-                            <option>English (NZ)</option>
-                            <option>Te Reo Māori</option>
-                            <option>Samoan</option>
-                        </select>
-                    </div>
-                    <button class="action-button" onclick="backToMenu()">← BACK</button>
-                </div>
+                <div id="player">👩‍🦰</div>
 
-                <!-- LEADERBOARD SCREEN -->
-                <div id="leaderboard" class="leaderboard-screen hidden">
-                    <h2>🏆 LEADERBOARD 🏆</h2>
-                    <div style="margin-top: 15px; max-height: 250px; overflow-y: auto;">
-                        <div class="leaderboard-item">
-                            <span class="rank">🥇 Aroha P.</span>
-                            <span>8,750 pts</span>
-                        </div>
-                        <div class="leaderboard-item">
-                            <span class="rank">🥈 Tawera M.</span>
-                            <span>8,250 pts</span>
-                        </div>
-                        <div class="leaderboard-item">
-                            <span class="rank">🥉 Hinemoa W.</span>
-                            <span>7,980 pts</span>
-                        </div>
-                        <div class="leaderboard-item">
-                            <span class="rank">4. Kahu T.</span>
-                            <span>7,650 pts</span>
-                        </div>
-                        <div class="leaderboard-item">
-                            <span class="rank">5. Moana (YOU)</span>
-                            <span id="playerScore">0 pts</span>
-                        </div>
-                    </div>
-                    <button class="action-button" onclick="backToMenu()" style="margin-top: 15px;">← BACK</button>
-                </div>
+                <div id="notification"></div>
+            </div>
 
-                <!-- GAMEPLAY SCREEN -->
-                <div id="gameplay" class="hidden">
-                    <div class="stats">
-                        <div class="stat-item">📊 Level: <span id="currentLevel">1</span></div>
-                        <div class="stat-item">💰 Score: <span id="score">0</span></div>
-                        <div class="stat-item"><span class="hearts" id="lives">❤❤❤</span></div>
-                    </div>
-
-                    <div class="gameplay-area" id="gameplayArea">
-                        <div class="moana" onclick="moveMonana()">👩‍🦰</div>
-                        <div class="mentor" id="mentor">👩‍⚕️</div>
-                        <div class="obstacle" id="obstacle1" onclick="hitObstacle()" style="top: 50px; left: 300px;">⚠️</div>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 30%;">30%</div>
-                    </div>
-
-                    <div id="messageBox"></div>
-
-                    <div id="questionArea" class="hidden">
-                        <div class="question-box">
-                            <p id="questionText"></p>
-                            <div id="answersContainer"></div>
-                            <button class="action-button" onclick="submitAnswer()">SUBMIT</button>
-                        </div>
-                    </div>
-
-                    <div id="mentorArea" class="hidden">
-                        <div class="mentor-bio">
-                            <p id="mentorName"></p>
-                            <p id="mentorBio"></p>
-                            <button class="action-button" onclick="continueGame()">CONTINUE</button>
-                        </div>
-                    </div>
-
-                    <button class="action-button" onclick="backToMenu()" style="align-self: center; margin-top: 10px;">← MAIN MENU</button>
-                </div>
+            <!-- GAME OVER SCREEN -->
+            <div class="game-over-screen" id="gameOverScreen">
+                <div class="game-over-text">💔 GAME OVER!</div>
+                <div class="final-score">Score: <span id="finalScore">0</span></div>
+                <button class="restart-btn" onclick="backToMenu()">← MENU</button>
+                <button class="restart-btn" onclick="startGame()">🔄 TRY AGAIN</button>
             </div>
         </div>
     </div>
@@ -421,205 +379,250 @@
             score: 0,
             level: 1,
             lives: 3,
-            progress: 30,
-            currentMentor: null,
-            currentQuestion: null,
-            selectedAnswer: null
+            combo: 0,
+            playerX: 1, // 0=left, 1=middle, 2=right
+            gameActive: false,
+            isJumping: false,
+            jumpVelocity: 0,
+            invincible: false,
+            invincibleTime: 0
         };
 
-        const mentors = [
-            {
-                name: "👩‍⚕️ Dr. Kiri Tupou",
-                title: "Surgical Specialist",
-                bio: "I help people through complex medical procedures. My path involved resilience and mentorship!"
-            },
-            {
-                name: "👩‍💻 Aroha Williams",
-                title: "Software Engineer",
-                bio: "I build technologies that solve real problems. Career in tech is full of opportunities!"
-            },
-            {
-                name: "👩‍🏫 Raina Thompson",
-                title: "Teacher & Educator",
-                bio: "Education is my passion. I shape the future by inspiring young minds like yours!"
+        const LANES = [33, 50, 67]; // Bottom positions for each lane
+        const GAME_HEIGHT = 600;
+        const OBSTACLE_SPEED = 8;
+        const SPAWN_RATE = 2000;
+
+        // Obstacles
+        const obstacles = ['🚧', '⚠️', '🛑'];
+        const mentors = ['👩‍⚕️', '👩‍💻', '👩‍🏫', '🧑‍🔬', '👨‍✈️'];
+        const powerUps = ['⭐', '💎', '🏆'];
+
+        let obstacleInterval;
+        let updateInterval;
+
+        // Event Listeners
+        document.addEventListener('keydown', (e) => {
+            if (!gameState.gameActive) return;
+
+            if (e.key === 'ArrowLeft' || e.key === 'a') {
+                if (gameState.playerX > 0) gameState.playerX--;
+                updatePlayerPosition();
             }
-        ];
-
-        const questions = [
-            {
-                text: "What's one quality of a good mentor?",
-                answers: ["Patience", "Knowledge", "Experience", "All of the above"],
-                correct: 3
-            },
-            {
-                text: "Which career path interests you most?",
-                answers: ["Medicine", "Engineering", "Business", "Education"],
-                correct: 0
-            },
-            {
-                text: "What's important for career success?",
-                answers: ["Hard work", "Networking", "Continuous learning", "All of the above"],
-                correct: 3
+            if (e.key === 'ArrowRight' || e.key === 'd') {
+                if (gameState.playerX < 2) gameState.playerX++;
+                updatePlayerPosition();
             }
-        ];
+            if (e.key === ' ') {
+                e.preventDefault();
+                jump();
+            }
+        });
 
-        function showScreen(screenId) {
-            document.querySelectorAll('[id$="Menu"], [id$="Play"], #howToPlay, #settings, #leaderboard, #gameplay, #mentorScreen').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
+        function updatePlayerPosition() {
+            const player = document.getElementById('player');
+            player.style.left = (LANES[gameState.playerX] - 5) + '%';
         }
 
-        function backToMenu() {
-            showScreen('mainMenu');
+        function jump() {
+            if (!gameState.isJumping) {
+                gameState.isJumping = true;
+                gameState.jumpVelocity = 20;
+            }
         }
 
-        function showHowToPlay() {
-            showScreen('howToPlay');
-        }
-
-        function showSettings() {
-            showScreen('settings');
+        function startTutorial() {
+            document.getElementById('menuScreen').classList.add('hidden');
+            document.getElementById('tutorialScreen').classList.remove('hidden');
         }
 
         function showLeaderboard() {
-            document.getElementById('playerScore').textContent = gameState.score + ' pts';
-            showScreen('leaderboard');
+            alert(`🏆 HIGH SCORES 🏆\n\n🥇 Aroha P. - 8,750\n🥈 Tawera M. - 8,250\n🥉 Moana - ${gameState.score || 0}`);
+        }
+
+        function showSettings() {
+            alert('⚙️ SETTINGS\n\n🔊 Sound: ON\n🌍 Language: English (NZ)\n\nMore coming soon!');
         }
 
         function startGame() {
+            document.getElementById('tutorialScreen').classList.add('hidden');
+            document.getElementById('gameContainer').style.display = 'block';
+            document.getElementById('gameOverScreen').classList.add('hidden');
+
             gameState = {
                 score: 0,
                 level: 1,
                 lives: 3,
-                progress: 30,
-                currentMentor: null,
-                currentQuestion: null,
-                selectedAnswer: null
+                combo: 0,
+                playerX: 1,
+                gameActive: true,
+                isJumping: false,
+                jumpVelocity: 0,
+                invincible: false,
+                invincibleTime: 0
             };
+
             updateHUD();
-            showScreen('gameplay');
+            updatePlayerPosition();
+            clearGameObjects();
+
+            // Spawn obstacles
+            obstacleInterval = setInterval(spawnObstacle, SPAWN_RATE);
+            updateInterval = setInterval(updateGame, 50);
+        }
+
+        function updateGame() {
+            if (!gameState.gameActive) return;
+
+            // Handle jumping
+            if (gameState.isJumping) {
+                gameState.jumpVelocity -= 1.5;
+                const player = document.getElementById('player');
+                const currentBottom = parseFloat(player.style.bottom || '50px');
+                player.style.bottom = (currentBottom + gameState.jumpVelocity) + 'px';
+
+                if (currentBottom <= 50) {
+                    player.style.bottom = '50px';
+                    gameState.isJumping = false;
+                    gameState.jumpVelocity = 0;
+                }
+            }
+
+            // Move obstacles
+            const obstacles_el = document.querySelectorAll('.obstacle, .mentor, .coin');
+            obstacles_el.forEach((obs, i) => {
+                const top = parseFloat(obs.style.top);
+                obs.style.top = (top + OBSTACLE_SPEED) + 'px';
+
+                // Check collision
+                checkCollision(obs);
+
+                // Remove if off screen
+                if (top > 100) {
+                    obs.remove();
+                    if (obs.classList.contains('coin')) {
+                        gameState.score += 5;
+                        gameState.combo++;
+                    }
+                }
+            });
+
+            // Handle invincible timer
+            if (gameState.invincible) {
+                gameState.invincibleTime--;
+                if (gameState.invincibleTime <= 0) {
+                    gameState.invincible = false;
+                    document.getElementById('player').classList.remove('invincible');
+                }
+            }
+
+            updateHUD();
+        }
+
+        function spawnObstacle() {
+            if (!gameState.gameActive) return;
+
+            const lane = Math.floor(Math.random() * 3);
+            const type = Math.floor(Math.random() * 100);
+
+            let element;
+            if (type < 50) {
+                // Obstacle
+                element = document.createElement('div');
+                element.classList.add('obstacle');
+                element.textContent = obstacles[Math.floor(Math.random() * obstacles.length)];
+                element.style.left = (LANES[lane] - 5) + '%';
+            } else if (type < 80) {
+                // Mentor (power-up)
+                element = document.createElement('div');
+                element.classList.add('mentor');
+                element.textContent = mentors[Math.floor(Math.random() * mentors.length)];
+                element.style.left = (LANES[lane] - 5) + '%';
+            } else {
+                // Coin
+                element = document.createElement('div');
+                element.classList.add('coin');
+                element.textContent = '💰';
+                element.style.left = (LANES[lane] - 5) + '%';
+            }
+
+            element.style.top = '-5%';
+            document.getElementById('gameContainer').appendChild(element);
+        }
+
+        function checkCollision(obs) {
+            const player = document.getElementById('player');
+            const playerRect = player.getBoundingClientRect();
+            const obsRect = obs.getBoundingClientRect();
+
+            if (playerRect.left < obsRect.right &&
+                playerRect.right > obsRect.left &&
+                playerRect.top < obsRect.bottom &&
+                playerRect.bottom > obsRect.top) {
+
+                if (obs.classList.contains('obstacle')) {
+                    if (gameState.invincible) {
+                        obs.remove();
+                        gameState.score += 10;
+                        gameState.combo++;
+                    } else {
+                        gameState.lives--;
+                        gameState.combo = 0;
+                        showNotification('💥 HIT!');
+                        if (gameState.lives <= 0) {
+                            gameOver();
+                        }
+                    }
+                } else if (obs.classList.contains('mentor')) {
+                    obs.remove();
+                    gameState.score += 50;
+                    gameState.combo += 5;
+                    gameState.invincible = true;
+                    gameState.invincibleTime = 150;
+                    player.classList.add('invincible');
+                    showNotification('⭐ MENTOR POWER-UP!');
+                } else if (obs.classList.contains('coin')) {
+                    obs.remove();
+                }
+            }
+        }
+
+        function showNotification(text) {
+            const notif = document.getElementById('notification');
+            notif.textContent = text;
+            notif.style.display = 'block';
+            setTimeout(() => {
+                notif.style.display = 'none';
+            }, 1000);
         }
 
         function updateHUD() {
             document.getElementById('score').textContent = gameState.score;
-            document.getElementById('currentLevel').textContent = gameState.level;
+            document.getElementById('level').textContent = Math.floor(gameState.score / 500) + 1;
             document.getElementById('lives').textContent = '❤'.repeat(gameState.lives);
-            document.getElementById('progressFill').style.width = gameState.progress + '%';
-            document.getElementById('progressFill').textContent = gameState.progress + '%';
+            document.getElementById('combo').textContent = gameState.combo + 'x';
         }
 
-        function moveMonana() {
-            if (gameState.progress < 100) {
-                gameState.progress += 10;
-                gameState.score += 2;
-                updateHUD();
-                showMessage('✓ Moving forward!', 'success');
-
-                if (gameState.progress >= 100) {
-                    levelComplete();
-                } else if (Math.random() > 0.5) {
-                    meetMentor();
-                }
-            }
-        }
-
-        function hitObstacle() {
-            askQuestion();
-        }
-
-        function askQuestion() {
-            const q = questions[Math.floor(Math.random() * questions.length)];
-            gameState.currentQuestion = q;
-            document.getElementById('questionText').textContent = q.text;
-            
-            let answersHTML = '';
-            q.answers.forEach((answer, index) => {
-                answersHTML += `
-                    <label class="answer-option">
-                        <input type="radio" name="answer" value="${index}" onchange="gameState.selectedAnswer = ${index}">
-                        ${answer}
-                    </label>
-                `;
-            });
-            document.getElementById('answersContainer').innerHTML = answersHTML;
-            document.getElementById('questionArea').classList.remove('hidden');
-        }
-
-        function submitAnswer() {
-            if (gameState.selectedAnswer === null) {
-                showMessage('⚠️ Please select an answer!', 'info');
-                return;
-            }
-
-            document.getElementById('questionArea').classList.add('hidden');
-
-            if (gameState.selectedAnswer === gameState.currentQuestion.correct) {
-                gameState.score += 5;
-                gameState.progress += 5;
-                showMessage('✅ Correct! +5 points!', 'success');
-            } else {
-                gameState.lives--;
-                showMessage('❌ Wrong answer... -1 life', 'error');
-                if (gameState.lives <= 0) {
-                    gameOver();
-                    return;
-                }
-            }
-
-            gameState.selectedAnswer = null;
-            updateHUD();
-        }
-
-        function meetMentor() {
-            const mentor = mentors[Math.floor(Math.random() * mentors.length)];
-            gameState.currentMentor = mentor;
-            gameState.score += 10;
-            gameState.progress += 10;
-
-            document.getElementById('mentorName').textContent = mentor.name + ' - ' + mentor.title;
-            document.getElementById('mentorBio').textContent = mentor.bio;
-            document.getElementById('mentorArea').classList.remove('hidden');
-
-            updateHUD();
-        }
-
-        function continueGame() {
-            document.getElementById('mentorArea').classList.add('hidden');
-            if (gameState.progress >= 100) {
-                levelComplete();
-            }
-        }
-
-        function levelComplete() {
-            showMessage(`🎉 LEVEL ${gameState.level} COMPLETE! Score: +50 pts`, 'success');
-            gameState.score += 50;
-            gameState.level++;
-            setTimeout(() => {
-                gameState.progress = 30;
-                updateHUD();
-            }, 2000);
+        function clearGameObjects() {
+            document.querySelectorAll('.obstacle, .mentor, .coin').forEach(el => el.remove());
         }
 
         function gameOver() {
-            showMessage('💔 GAME OVER! Return to menu to try again.', 'error');
-            setTimeout(() => {
-                backToMenu();
-            }, 3000);
+            gameState.gameActive = false;
+            clearInterval(obstacleInterval);
+            clearInterval(updateInterval);
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('gameOverScreen').style.display = 'flex';
         }
 
-        function showMessage(text, type) {
-            const box = document.getElementById('messageBox');
-            box.innerHTML = `<div class="message ${type}">${text}</div>`;
-            setTimeout(() => {
-                box.innerHTML = '';
-            }, 3000);
+        function backToMenu() {
+            document.getElementById('menuScreen').classList.remove('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('gameContainer').style.display = 'none';
+            clearInterval(obstacleInterval);
+            clearInterval(updateInterval);
+            clearGameObjects();
         }
-
-        // Initialize
-        window.onload = function() {
-            showScreen('mainMenu');
-        };
     </script>
 </body>
 </html>
